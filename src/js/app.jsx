@@ -29,9 +29,11 @@ export default class App extends React.Component {
 
     return (
       <div className='container'>
-        <div className=''>
-          <h3>Mortgage Calculator</h3>
-          <hr />
+        <div className='row'>
+          <div className='offset-2'>
+            <h3>Mortgage Calculator</h3>
+            <hr />
+          </div>
         </div>
 
         <form>
