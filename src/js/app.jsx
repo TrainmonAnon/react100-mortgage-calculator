@@ -5,7 +5,6 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      title: "Mortgage Calculator",
       balance: 0,
       rate: 0.01,
       term: 15,
@@ -13,33 +12,69 @@ export default class App extends React.Component {
     };
   }
 
+  onChange(e) {
+    this.setState({ [e.target.id]: e.target.value });
+  }
+
   calculate(balance, rate, term) {
-    let mRate = rate / 1200;
-    let payment = (balance * mRate) / (1 - Math.pow(1 / (1 + mRate), term * 12));
+    const mRate = rate / 1200;
+    const payment = (balance * mRate) / (1 - Math.pow(1 / (1 + mRate), term * 12));
     this.setState({
       payment: payment.toFixed(2),
     });
   }
-  
-  onChange(e){
-    this.setState({ [e.target.id]: e.target.value });
-  }
 
   render() {
-    let title = this.state.title;
-    let payment = this.state.payment;
+    const payment = this.state.payment;
 
     return (
       <div className='container'>
-        <h3>{title}</h3>
-        <input name='balance' id='balance' type='number' onChange={(e) => this.onChange(e) } />
-        <input name='rate' id='rate' type='number' step='0.01' onChange={(e) => this.onChange(e) } />
-        <select name='term' id='term' onChange={(e) => this.onChange(e)} >
-          <option value='15'>15</option>
-          <option value='30'>30</option>
-        </select>
-        <button name='submit' id='submit' onClick={() => this.calculate(this.state.balance, this.state.rate, this.state.term) } ></button>
-        <div name='output' id='output'>${payment} is your payment.</div>
+        <div className=''>
+          <h3>Mortgage Calculator</h3>
+          <hr />
+        </div>
+
+        <form>
+          <div className='form-group row'>
+            <label htmlFor='balance' className='col-2 col-form-label'>Loan Balance</label>
+            <div className='col-10'>
+              <input
+                name='balance' id='balance' type='number' min='0'
+                className='form-control' onChange={ e => this.onChange(e) }
+              />
+            </div>
+          </div>
+          <div className='form-group row'>
+            <label htmlFor='rate' className='col-2 col-form-label'>Interest Rate (%)</label>
+            <div className='col-10'>
+              <input
+                name='rate' id='rate' type='number' step='0.01' min='0'
+                className='form-control' onChange={ e => this.onChange(e) }
+              />
+            </div>
+          </div>
+          <div className='form-group row'>
+            <label htmlFor='term' className='col-2 col-form-label'>Loan Term (years)</label>
+            <div className='col-10'>
+              <select
+                name='term' id='term'
+                className='form-control' onChange={ e => this.onChange(e) }
+              >
+                <option value='15'>15</option>
+                <option value='30'>30</option>
+              </select>
+            </div>
+          </div>
+          <div className='form-group row'>
+            <button
+              name='submit' id='submit' type='button'
+              className='offset-2 btn btn-primary'
+              onClick={ () => this.calculate(this.state.balance, this.state.rate, this.state.term) }
+            >Calculate</button>
+          </div>
+        </form>
+
+        <div name='output' id='output' className='offset-2'>${payment} is your payment.</div>
       </div>
     );
   }
